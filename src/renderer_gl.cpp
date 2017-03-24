@@ -2825,6 +2825,30 @@ namespace bgfx { namespace gl
 			}
 		}
 
+		void readPixels(FrameBufferHandle _handle, uint16_t _x, uint16_t _y, uint16_t _width, uint16_t _height, void* _data) override
+		{
+			if (isValid(_handle))
+			{
+				FrameBufferGL& frameBuffer = m_frameBuffers[_handle.idx];
+				uint16_t discardFlags = BGFX_CLEAR_NONE;
+				setFrameBuffer(_handle, 0, discardFlags);
+
+				if (!BX_ENABLED(BX_PLATFORM_EMSCRIPTEN) && !BX_ENABLED(BX_PLATFORM_IOS))
+				{
+					GL_CHECK(glReadBuffer(GL_COLOR_ATTACHMENT0));
+				}
+
+				GL_CHECK(glReadPixels(_x
+					, _y
+					, _width
+					, _height
+					, m_readPixelsFmt
+					, GL_UNSIGNED_BYTE
+					, _data
+					));
+			}
+		}
+
 		void resizeTexture(TextureHandle _handle, uint16_t _width, uint16_t _height, uint8_t _numMips) override
 		{
 			TextureGL& texture = m_textures[_handle.idx];

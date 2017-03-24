@@ -2396,6 +2396,30 @@ namespace bgfx
 				}
 				break;
 
+			case CommandBuffer::ReadPixels:
+				{
+					FrameBufferHandle handle;
+					_cmdbuf.read(handle);
+
+					uint16_t x;
+					_cmdbuf.read(x);
+
+					uint16_t y;
+					_cmdbuf.read(y);
+
+					uint16_t width;
+					_cmdbuf.read(width);
+
+					uint16_t height;
+					_cmdbuf.read(height);
+
+					void* data;
+					_cmdbuf.read(data);
+
+					m_renderCtx->readPixels(handle, x, y, width, height, data);
+				}
+				break;
+
 			case CommandBuffer::ResizeTexture:
 				{
 					TextureHandle handle;
@@ -3460,6 +3484,13 @@ error:
 		BX_CHECK(NULL != _data, "_data can't be NULL");
 		BGFX_CHECK_CAPS(BGFX_CAPS_TEXTURE_READ_BACK, "Texture read-back is not supported!");
 		return s_ctx->readTexture(_handle, _data, _mip);
+	}
+
+	uint32_t readPixels(FrameBufferHandle _handle, uint16_t _x, uint16_t _y, uint16_t _width, uint16_t _height, void* _data)
+	{
+		BGFX_CHECK_MAIN_THREAD();
+		BX_CHECK(NULL != _data, "_data can't be NULL");
+		return s_ctx->readPixels(_handle, _x, _y, _width, _height, _data);
 	}
 
 	FrameBufferHandle createFrameBuffer(uint16_t _width, uint16_t _height, TextureFormat::Enum _format, uint32_t _textureFlags)

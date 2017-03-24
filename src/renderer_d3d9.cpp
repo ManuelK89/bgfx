@@ -1087,6 +1087,10 @@ namespace bgfx { namespace d3d9
 			DX_CHECK(texture.m_texture2d->UnlockRect(_mip) );
 		}
 
+		void readPixels(FrameBufferHandle /*_handle*/, uint16_t /*_x*/, uint16_t /*_y*/, uint16_t /*_width*/, uint16_t /*_height*/, void* /*_data*/) override
+		{
+		}
+
 		void resizeTexture(TextureHandle _handle, uint16_t _width, uint16_t _height, uint8_t _numMips) override
 		{
 			TextureD3D9& texture = m_textures[_handle.idx];

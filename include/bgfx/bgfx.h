@@ -1914,6 +1914,21 @@ namespace bgfx
 	///
 	void setName(TextureHandle _handle, const char* _name);
 
+	/// Read back frame buffer pixels content.
+	///
+	/// @param[in] _handle Framebuffer handle.
+	/// @param[in] _x Framebuffer X position.
+	/// @param[in] _y Framebuffer Y position.
+	/// @param[in] _width Width of region.
+	/// @param[in] _height Height of region.
+	/// @param[in] _data Destination buffer.
+	///
+	/// @returns Frame number when the result will be available. See: `bgfx::frame`.
+	///
+	/// @attention C99 equivalent is `bgfx_read_frame_buffer_pixels`.
+	///
+	uint32_t readPixels(FrameBufferHandle _handle, uint16_t _x, uint16_t _y, uint16_t _width, uint16_t _height, void* _data);
+
 	/// Destroy texture.
 	///
 	/// @param[in] _handle Texture handle.
