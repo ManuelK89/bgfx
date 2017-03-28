@@ -596,7 +596,7 @@ BGFX_C_API void bgfx_shutdown();
 BGFX_C_API void bgfx_reset(uint32_t _width, uint32_t _height, uint32_t _flags);
 
 /**/
-BGFX_C_API uint32_t bgfx_frame(bool _capture);
+BGFX_C_API uint32_t bgfx_frame(bool _capture, int32_t _timeout_msecs);
 
 /**/
 BGFX_C_API bgfx_renderer_type_t bgfx_get_renderer_type();
@@ -759,6 +759,9 @@ BGFX_C_API uint32_t bgfx_read_texture(bgfx_texture_handle_t _handle, void* _data
 
 /**/
 BGFX_C_API void bgfx_set_texture_name(bgfx_texture_handle_t _handle, const char* _name);
+
+/**/
+BGFX_C_API uint32_t bgfx_read_pixels(bgfx_frame_buffer_handle_t _handle, uint16_t _x, uint16_t _y, uint16_t _width, uint16_t _height, void* _data);
 
 /**/
 BGFX_C_API void bgfx_destroy_texture(bgfx_texture_handle_t _handle);

@@ -1072,6 +1072,7 @@ namespace bgfx
 	/// singlethreaded renderer this call does frame rendering.
 	///
 	/// @param[in] _capture Capture frame with graphics debugger.
+	/// @param[in] _timeout_msecs Max. time waiting for render thread. Method does nothing at timeout.
 	///
 	/// @returns Current frame number. This might be used in conjunction with
 	///   double/multi buffering data outside the library and passing it to
@@ -1079,7 +1080,7 @@ namespace bgfx
 	///
 	/// @attention C99 equivalent is `bgfx_frame`.
 	///
-	uint32_t frame(bool _capture = false);
+	uint32_t frame(bool _capture = false, int32_t _timeout_msecs = -1);
 
 	/// Returns current renderer backend API type.
 	///

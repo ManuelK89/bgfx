@@ -86,7 +86,7 @@ typedef struct bgfx_interface_vtbl
     bool (*init)(bgfx_renderer_type_t _type, uint16_t _vendorId, uint16_t _deviceId, bgfx_callback_interface_t* _callback, bgfx_allocator_interface_t* _allocator);
     void (*shutdown)();
     void (*reset)(uint32_t _width, uint32_t _height, uint32_t _flags);
-    uint32_t (*frame)(bool _capture);
+    uint32_t (*frame)(bool _capture, int32_t timeout_msecs);
     bgfx_renderer_type_t (*get_renderer_type)();
     const bgfx_caps_t* (*get_caps)();
     const bgfx_hmd_t* (*get_hmd)();
@@ -140,6 +140,7 @@ typedef struct bgfx_interface_vtbl
     void (*update_texture_cube)(bgfx_texture_handle_t _handle, uint16_t _layer, uint8_t _side, uint8_t _mip, uint16_t _x, uint16_t _y, uint16_t _width, uint16_t _height, const bgfx_memory_t* _mem, uint16_t _pitch);
     uint32_t (*read_texture)(bgfx_texture_handle_t _handle, void* _data, uint8_t _mip);
     void (*set_texture_name)(bgfx_texture_handle_t _handle, const char* _name);
+    uint32_t (*read_pixels)(bgfx_frame_buffer_handle_t _handle, uint16_t _x, uint16_t _y, uint16_t _width, uint16_t _height, void* _data);
     void (*destroy_texture)(bgfx_texture_handle_t _handle);
     bgfx_frame_buffer_handle_t (*create_frame_buffer)(uint16_t _width, uint16_t _height, bgfx_texture_format_t _format, uint32_t _textureFlags);
     bgfx_frame_buffer_handle_t (*create_frame_buffer_scaled)(bgfx_backbuffer_ratio_t _ratio, bgfx_texture_format_t _format, uint32_t _textureFlags);

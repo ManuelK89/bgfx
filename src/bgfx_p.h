@@ -4265,7 +4265,7 @@ namespace bgfx
 			m_submit->blit(_id, _dst, _dstMip, _dstX, _dstY, _dstZ, _src, _srcMip, _srcX, _srcY, _srcZ, _width, _height, _depth);
 		}
 
-		BGFX_API_FUNC(uint32_t frame(bool _capture = false) );
+		BGFX_API_FUNC(uint32_t frame(bool _capture = false, int32_t _timeout_msecs = -1) );
 
 		void dumpViewStats();
 		void freeDynamicBuffers();
@@ -4317,17 +4317,24 @@ namespace bgfx
 			}
 		}
 
-		void renderSemWait()
+		bool renderSemWait(int32_t _msecs = -1)
 		{
-			if (!m_singleThreaded)
+			if (m_singleThreaded)
 			{
-				BGFX_PROFILER_SCOPE(bgfx, render_thread_wait, 0xff2040ff);
-				int64_t start = bx::getHPCounter();
-				bool ok = m_renderSem.wait();
-				BX_CHECK(ok, "Semaphore wait failed."); BX_UNUSED(ok);
+				return true;
+			}
+
+			BGFX_PROFILER_SCOPE(bgfx, render_thread_wait, 0xff2040ff);
+			int64_t start = bx::getHPCounter();
+			bool ok = m_renderSem.wait(_msecs);
+			if (ok)
+			{
 				m_submit->m_waitRender = bx::getHPCounter() - start;
 				m_submit->m_perfStats.waitRender = m_submit->m_waitRender;
+				return true;
 			}
+
+			return false;
 		}
 
 		bx::Semaphore m_renderSem;

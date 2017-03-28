@@ -1595,7 +1595,7 @@ namespace bgfx
 		}
 	}
 
-	uint32_t Context::frame(bool _capture)
+	uint32_t Context::frame(bool _capture, int32_t _timeout_msecs)
 	{
 		BX_CHECK(0 == m_instBufferCount, "Instance buffer allocated, but not used. This is incorrect, and causes memory leak.");
 
@@ -1613,8 +1613,10 @@ namespace bgfx
 
 		BGFX_PROFILER_SCOPE(bgfx, main_thread_frame, 0xff2040ff);
 		// wait for render thread to finish
-		renderSemWait();
-		frameNoRenderWait();
+		if (renderSemWait(_timeout_msecs))
+		{
+			frameNoRenderWait();
+		}
 
 		return m_frames;
 	}
@@ -2790,10 +2792,10 @@ error:
 		s_ctx->reset(_width, _height, _flags);
 	}
 
-	uint32_t frame(bool _capture)
+	uint32_t frame(bool _capture, int32_t timeout_msecs)
 	{
 		BGFX_CHECK_MAIN_THREAD();
-		return s_ctx->frame(_capture);
+		return s_ctx->frame(_capture, timeout_msecs);
 	}
 
 	const Caps* getCaps()
@@ -4327,9 +4329,9 @@ BGFX_C_API void bgfx_reset(uint32_t _width, uint32_t _height, uint32_t _flags)
 	bgfx::reset(_width, _height, _flags);
 }
 
-BGFX_C_API uint32_t bgfx_frame(bool _capture)
+BGFX_C_API uint32_t bgfx_frame(bool _capture, int32_t _timeout_msecs)
 {
-	return bgfx::frame(_capture);
+	return bgfx::frame(_capture, _timeout_msecs);
 }
 
 BGFX_C_API bgfx_renderer_type_t bgfx_get_renderer_type()
@@ -4655,6 +4657,12 @@ BGFX_C_API void bgfx_set_texture_name(bgfx_texture_handle_t _handle, const char*
 {
 	union { bgfx_texture_handle_t c; bgfx::TextureHandle cpp; } handle = { _handle };
 	bgfx::setName(handle.cpp, _name);
+}
+
+BGFX_C_API uint32_t bgfx_read_pixels(bgfx_frame_buffer_handle_t _handle, uint16_t _x, uint16_t _y, uint16_t _width, uint16_t _height, void* _data)
+{
+	union { bgfx_frame_buffer_handle_t c; bgfx::FrameBufferHandle cpp; } handle = { _handle };
+	return bgfx::readPixels(handle.cpp, _x, _y, _width, _height, _data);
 }
 
 BGFX_C_API void bgfx_destroy_texture(bgfx_texture_handle_t _handle)
@@ -5051,6 +5059,7 @@ BGFX_C_API bgfx_interface_vtbl_t* bgfx_get_interface(uint32_t _version)
 {
 	if (_version == BGFX_API_VERSION)
 	{
+
 #define BGFX_IMPORT                                                \
 	BGFX_IMPORT_FUNC(render_frame)                                 \
 	BGFX_IMPORT_FUNC(set_platform_data)                            \
