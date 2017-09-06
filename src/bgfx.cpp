@@ -5134,6 +5134,7 @@ BGFX_C_API bgfx_interface_vtbl_t* bgfx_get_interface(uint32_t _version)
 	BGFX_IMPORT_FUNC(update_texture_3d)                            \
 	BGFX_IMPORT_FUNC(update_texture_cube)                          \
 	BGFX_IMPORT_FUNC(read_texture)                                 \
+	BGFX_IMPORT_FUNC(read_pixels)                                  \
 	BGFX_IMPORT_FUNC(set_texture_name)                             \
 	BGFX_IMPORT_FUNC(destroy_texture)                              \
 	BGFX_IMPORT_FUNC(create_frame_buffer)                          \

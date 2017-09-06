@@ -758,10 +758,10 @@ BGFX_C_API void bgfx_update_texture_cube(bgfx_texture_handle_t _handle, uint16_t
 BGFX_C_API uint32_t bgfx_read_texture(bgfx_texture_handle_t _handle, void* _data, uint8_t _mip);
 
 /**/
-BGFX_C_API void bgfx_set_texture_name(bgfx_texture_handle_t _handle, const char* _name);
+BGFX_C_API uint32_t bgfx_read_pixels(bgfx_frame_buffer_handle_t _handle, uint16_t _x, uint16_t _y, uint16_t _width, uint16_t _height, void* _data);
 
 /**/
-BGFX_C_API uint32_t bgfx_read_pixels(bgfx_frame_buffer_handle_t _handle, uint16_t _x, uint16_t _y, uint16_t _width, uint16_t _height, void* _data);
+BGFX_C_API void bgfx_set_texture_name(bgfx_texture_handle_t _handle, const char* _name);
 
 /**/
 BGFX_C_API void bgfx_destroy_texture(bgfx_texture_handle_t _handle);
