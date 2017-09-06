@@ -97,9 +97,6 @@ namespace bgfx { namespace glsl
 			strReplace(code, "shadow2DEXT", "shadow2D");
 			strReplace(code, "shadow2DProjARB", "shadow2DProj");
 			strReplace(code, "shadow2DProjEXT", "shadow2DProj");
-
-			// Workaround for 300 es (Manuel Kroeter)
-			strReplace(code, "texture2DArray", "texture");
 		}
 
 		UniformArray uniforms;
