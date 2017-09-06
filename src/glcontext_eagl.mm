@@ -176,7 +176,7 @@ namespace bgfx { namespace gl
 			, nil
 			];
 
-		EAGLContext context = (EAGLContext*)g_platformData.context;
+		EAGLContext* context = (EAGLContext*)g_platformData.context;
 		if (NULL == g_platformData.context)
 		{
 			context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES3];
