@@ -200,15 +200,9 @@ EGL_IMPORT
 
 			EGLint attrs[] =
 			{
-				EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
-
-#	if BX_PLATFORM_ANDROID
-				EGL_DEPTH_SIZE, 16,
-#	else
 				EGL_DEPTH_SIZE, 24,
-#	endif // BX_PLATFORM_
+				EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
 				EGL_STENCIL_SIZE, 8,
-
 				// Android Recordable surface
 				hasEglAndroidRecordable ? 0x3142 : EGL_NONE,
 				hasEglAndroidRecordable ? 1      : EGL_NONE,
@@ -218,7 +212,17 @@ EGL_IMPORT
 
 			EGLint numConfig = 0;
 			success = eglChooseConfig(m_display, attrs, &m_config, 1, &numConfig);
+			if (!success)
+			{
+				// Try again with 16 bit depth buffer
+				attrs[1] = 16;
+				success = eglChooseConfig(m_display, attrs, &m_config, 1, &numConfig);
+			}
 			BGFX_FATAL(success, Fatal::UnableToInitialize, "eglChooseConfig");
+			EGLint depth_bits;
+			eglGetConfigAttrib(m_display, m_config, EGL_DEPTH_SIZE, &depth_bits);
+			BX_TRACE("Depth buffer size: %d bits", depth_bits);
+
 
 #	if BX_PLATFORM_ANDROID
 
